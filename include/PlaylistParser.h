@@ -15,7 +15,6 @@ public:
 		std::string tempURL = "";
 		std::string xspfSource = "";
 		
-		//std::cout << "Reading file: " << input << "\n";
 		if (GetRawHTML(rawHTML, input)) 
 		{
 			// initialize XSPF file source
@@ -25,12 +24,10 @@ public:
 			xspfSource += u8"	<trackList>\n";
 			int i = 0;
 			
-			//std::cout << "Parsing. . .\n";
 			while (GetVideoTitles(rawHTML))
 			{	
 				if (GetVideoURLs(rawHTML))
 				{
-					//std::cout << "Found " << m_urlMatches.size() << " urls.\n";
 					tempTitle = m_TitleMatches[0];
 					tempTitle = tempTitle.substr(12, tempTitle.size());
 					tempURL = m_urlMatches[0]; // there are 2 URLs per title
@@ -66,8 +63,6 @@ public:
 			xspfSource += u8"	</extension>\n";
 			xspfSource += u8"</playlist>\n";
 			
-			//std::cout << " Parsing complete.\n";
-			//std::cout << "Writing to: " << output << "\n";
 			// write output string to XSPF file
 			CreateXSPF(xspfSource, output);
 		}
@@ -114,10 +109,8 @@ public:
 	{
 		if (std::regex_search(source, m_TitleMatches, m_TitleRegex))
 		{
-			//source = m_TitleMatches.suffix().str();
 			return true;
 		}
-		//std::cout << "No title matches found.\n";
 		return false;
 	}
 	
@@ -125,10 +118,8 @@ public:
 	{
 		if (std::regex_search(source, m_urlMatches, m_URLRegex))
 		{
-			// source = m_urlMatches.suffix().str();
 			return true;
 		}
-		//std::cout << "No URL matches found.\n";
 		return false;
 	}
 	
@@ -153,7 +144,7 @@ private:
 	std::ifstream m_InputFile;
 	std::ofstream m_OutputFile;
 	
-	std::regex m_TitleRegex = std::regex(u8"(aria-label=\".+ Автор: The Cherno) | (aria-label=\".+ Автор: Cherno Unplugged)");
+	std::regex m_TitleRegex = std::regex(u8"(aria-label=\".+ Автор:) | (aria-label=\".+ Автор:)");
 	std::regex m_URLRegex = std::regex("/watch\\?v=[a-zA-Z0-9\\-_]+");
 	
 	std::smatch m_TitleMatches;

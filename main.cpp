@@ -36,48 +36,54 @@ public:
 			int i = 0;
 			
 			std::cout << "Parsing. . .\n";
-			if (GetVideoTitles(rawHTML))
+			while (GetVideoTitles(rawHTML))
 			{
 				if (m_TitleMatches.ready())
+				{
 					std::cout << "Found " << m_TitleMatches.size() << " titles.\n";
+					for (int k = 0; k < m_TitleMatches.size(); k++)
+					{
+						std::cout << m_TitleMatches[k] << "\n";
+					}
+				}
+				
 				if (GetVideoURLs(rawHTML))
 				{
 					std::cout << "Found " << m_urlMatches.size() << " urls.\n";
-					for (i = 0; i < m_TitleMatches.size(); i++)
-					{
-						tempTitle = m_TitleMatches[i];
-						tempURL = m_urlMatches[2*i]; // there are 2 URLs per title
-						
-						// add an element to output string
-						xspfSource += // new track
-						"		<track>\n";
-						xspfSource += // location
-						"			<location>" + tempURL + "</location>\n";
-						xspfSource += // title
-						"			<title>" + tempTitle + "</title>\n";
-						xspfSource += // extension application open
-						"			<extension application=\"http://www.videolan.org/vlc/playlist/0\">\n";
-						xspfSource += // id
-						"				<vlc:id>" + std::to_string(i) + "</vlc:id>";
-						xspfSource += // options
-						"				<vlc:option>network-caching=1000</vlc:option>\n";
-						xspfSource += // extension application close
-						"			</extension>";
-						xspfSource += // new track close
-						"		</track>\n";
-						i++;
-					}
+					tempTitle = m_TitleMatches[0];
+					tempTitle = tempTitle.substr(11, tempTitle.size());
+					tempURL = m_urlMatches[0]; // there are 2 URLs per title
+					
+					// add an element to output string
+					xspfSource += // new track
+					u8"		<track>\n";
+					xspfSource += // location
+					u8"			<location>https://www.youtube.com" + tempURL + "</location>\n";
+					xspfSource += // title
+					u8"			<title>" + tempTitle + "</title>\n";
+					xspfSource += // extension application open
+					u8"			<extension application=\"http://www.videolan.org/vlc/playlist/0\">\n";
+					xspfSource += // id
+					u8"				<vlc:id>" + std::to_string(i) + "</vlc:id>\n";
+					xspfSource += // options
+					u8"				<vlc:option>network-caching=1000</vlc:option>\n";
+					xspfSource += // extension application close
+					u8"			</extension>\n";
+					xspfSource += // new track close
+					u8"		</track>\n";
 				}
+				i++;
+				rawHTML = m_TitleMatches.suffix().str();
 			}
 			
 			// close XSPF file source
-			xspfSource += "	</tracklist>\n";
-			xspfSource += "	<extension application=\"http://www.videolan.org/vlc/playlist/0\">\n";
+			xspfSource += u8"	</tracklist>\n";
+			xspfSource += u8"	<extension application=\"http://www.videolan.org/vlc/playlist/0\">\n";
 			for (int j = 0; j <= i; j++){
-				xspfSource += "		<vlc:item tid=\"" + std::to_string(j) + "\"/>\n";
+				xspfSource += u8"		<vlc:item tid=\"" + std::to_string(j) + "\"/>\n";
 			}
-			xspfSource += "	</extension>\n";
-			xspfSource += "</playlist>\n";
+			xspfSource += u8"	</extension>\n";
+			xspfSource += u8"</playlist>\n";
 			
 			std::cout << " Parsing complete.\n";
 			std::cout << "Writing to: " << output << "\n";
@@ -123,19 +129,25 @@ public:
 		return false;
 	}
 	
-	bool GetVideoTitles(const std::string& source)
+	bool GetVideoTitles(std::string& source)
 	{
-		std::regex_search(source, m_TitleMatches, m_TitleRegex);
-		if (m_TitleMatches.ready())
+		if (std::regex_search(source, m_TitleMatches, m_TitleRegex))
+		{
+			//source = m_TitleMatches.suffix().str();
 			return true;
+		}
+		std::cout << "No title matches found.\n";
 		return false;
 	}
 	
-	bool GetVideoURLs(const std::string& source)
+	bool GetVideoURLs(std::string& source)
 	{
-		std::regex_search(source, m_urlMatches, m_URLRegex);
-		if (m_urlMatches.ready())
+		if (std::regex_search(source, m_urlMatches, m_URLRegex))
+		{
+			// source = m_urlMatches.suffix().str();
 			return true;
+		}
+		std::cout << "No URL matches found.\n";
 		return false;
 	}
 	
@@ -160,8 +172,8 @@ private:
 	std::ifstream m_InputFile;
 	std::ofstream m_OutputFile;
 	
-	std::regex m_TitleRegex = std::regex(u8"aria-label=\".+ Game Engine series");
-	std::regex m_URLRegex = std::regex(u8"/watch\?v=([a-zA-Z0-9-]+)");
+	std::regex m_TitleRegex = std::regex(u8"(aria-label=\".+ Автор: The Cherno) | (aria-label=\".+ Автор: Cherno Unplugged)");
+	std::regex m_URLRegex = std::regex("/watch\\?v=[a-zA-Z0-9\\-]+");
 	
 	std::smatch m_TitleMatches;
 	std::smatch m_urlMatches;

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include "./include/XSPF.h"
 #include "./include/PlaylistParser.h"
 
 int main(int argc, char** argv) 
@@ -29,8 +30,6 @@ int main(int argc, char** argv)
 	std::string sBuffer1; // just a buffer for strings
 	std::vector<std::string> inputFileNames; // store names of input files here
 	std::vector<std::string> outputFileNames; // store names of output files here
-	std::ifstream iFile; // input file descriptor
-	std::ofstream oFile; // output file descriptor
 	
 	PlaylistParser* pp = nullptr;
 	bool quit = false; // exit flag

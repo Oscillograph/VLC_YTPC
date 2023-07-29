@@ -1,6 +1,7 @@
 #ifndef PLAYLISTPARSER_H
 #define PLAYLISTPARSER_H
 
+#include "./XSPF.h"
 #include <regex>
 
 class PlaylistParser 
@@ -20,10 +21,7 @@ public:
 		if (GetRawHTML(rawHTML, input)) 
 		{
 			// initialize XSPF file source
-			xspfSource += u8"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-			xspfSource += u8"<playlist xmlns=\"http://xspf.org/ns/0/\" xmlns:vlc=\"http://www.videolan.org/vlc/playlist/ns/0/\" version=\"1\">\n";
-			xspfSource += u8"	<title>Плейлист</title>\n";
-			xspfSource += u8"	<trackList>\n";
+			xspfSource += XSPFCreator::AddHeader();
 			int i = 0;
 			
 			while (GetVideoTitles(rawHTML))
@@ -35,35 +33,14 @@ public:
 					tempURL = m_urlMatches[0]; // there are 2 URLs per title
 					
 					// add an element to output string
-					xspfSource += // new track
-					u8"		<track>\n";
-					xspfSource += // location
-					u8"			<location>https://www.youtube.com" + tempURL + "</location>\n";
-					xspfSource += // title
-					u8"			<title>" + tempTitle + "</title>\n";
-					xspfSource += // extension application open
-					u8"			<extension application=\"http://www.videolan.org/vlc/playlist/0\">\n";
-					xspfSource += // id
-					u8"				<vlc:id>" + std::to_string(i) + "</vlc:id>\n";
-					xspfSource += // options
-					u8"				<vlc:option>network-caching=1000</vlc:option>\n";
-					xspfSource += // extension application close
-					u8"			</extension>\n";
-					xspfSource += // new track close
-					u8"		</track>\n";
+					xspfSource += XSPFCreator::AddTrack(tempTitle, tempURL, i);
 				}
 				i++;
 				rawHTML = m_TitleMatches.suffix().str();
 			}
 			
 			// close XSPF file source
-			xspfSource += u8"	</trackList>\n";
-			xspfSource += u8"	<extension application=\"http://www.videolan.org/vlc/playlist/0\">\n";
-			for (int j = 0; j <= i; j++){
-				xspfSource += u8"		<vlc:item tid=\"" + std::to_string(j) + "\"/>\n";
-			}
-			xspfSource += u8"	</extension>\n";
-			xspfSource += u8"</playlist>\n";
+			xspfSource += XSPFCreator::AddFooter(i);
 			
 			// write output string to XSPF file
 			CreateXSPF(xspfSource, output);

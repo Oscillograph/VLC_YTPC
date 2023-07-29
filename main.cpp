@@ -2,7 +2,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <regex>
 #include <filesystem>
 #include "./include/PlaylistParser.h"
 
@@ -56,7 +55,8 @@ int main(int argc, char** argv)
 				std::string pathTemp = pathInput;
 				inputFileNames.clear();
 				outputFileNames.clear();
-				for (const auto & filePointer : std::filesystem::directory_iterator(pathTemp)){
+				for (const auto & filePointer : std::filesystem::directory_iterator(pathTemp))
+				{
 					inputFileNames.push_back(filePointer.path().string());
 					sBuffer1 = pathOutput + "/" + 
 					inputFileNames[inputFileNames.size()-1].substr(pathInput.size()+1, std::string::npos);
@@ -69,21 +69,14 @@ int main(int argc, char** argv)
 				}
 				
 				// for each of these files
-				for (int i = 0; i < inputFileNames.size(); i++){
+				for (int i = 0; i < inputFileNames.size(); i++)
+				{
 					std::cout << "Processing file:" << inputFileNames[i] << ".\n";
-					if (pp != nullptr)
 					{
-						delete pp;
-						pp = nullptr;
+						pp = new PlaylistParser(inputFileNames[i], outputFileNames[i]);
 					}
-					pp = new PlaylistParser(inputFileNames[i], outputFileNames[i]);
 				}
 				std::cout << "Done.\n";
-				if (pp != nullptr)
-				{
-					delete pp;
-					pp = nullptr;
-				}
 			}
 		}
 	}

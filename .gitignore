@@ -6,6 +6,7 @@
 *.win
 *.o
 *.ico
+*.zip
 VLC_YTPC_private.h
 VLC_YTPC_private.rc
 VLC_YTPC_private.res

@@ -1,6 +1,8 @@
 #ifndef PLAYLISTPARSER_H
 #define PLAYLISTPARSER_H
 
+#include <regex>
+
 class PlaylistParser 
 {
 public:

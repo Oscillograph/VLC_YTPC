@@ -13,7 +13,12 @@ public:
 		return output;
 	}
 	
-	inline static std::string AddTrack(const std::string& title, const std::string& url, const int& i)
+	inline static std::string AddTrack(
+		const std::string& title, 
+		const std::string& url, 
+		const int& i, 
+		const int& caching = 1000	// bigger value (in ms) might help in decreasing buffering
+		)
 	{
 		std::string output = "";
 
@@ -28,7 +33,7 @@ public:
 		output += // id
 		u8"				<vlc:id>" + std::to_string(i) + "</vlc:id>\n";
 		output += // options
-		u8"				<vlc:option>network-caching=1000</vlc:option>\n";
+		u8"				<vlc:option>network-caching=" + std::to_string(caching) + "</vlc:option>\n";
 		output += // extension application close
 		u8"			</extension>\n";
 		output += // new track close
@@ -47,6 +52,37 @@ public:
 		output += u8"	</extension>\n";
 		output += u8"</playlist>\n";
 		return output;
+	}
+	
+	inline static bool Create( // return true if something written
+		const std::string& source, 
+		const std::string& filepath = "./output/playlist.xspf")
+	{
+		std::ofstream m_OutputFile;
+		if (!m_OutputFile.is_open())
+		{
+			m_OutputFile.open(filepath);
+			m_OutputFile << source;
+			m_OutputFile.close();
+			return true;
+		}
+		return false;
+	}
+	
+	inline static bool Create( // return true if something written
+		const std::string& source, 
+		std::ofstream& m_OutputFile,
+		const std::string& filepath = "./output/playlist.xspf"
+		)
+	{
+		if (!m_OutputFile.is_open())
+		{
+			m_OutputFile.open(filepath);
+			m_OutputFile << source;
+			m_OutputFile.close();
+			return true;
+		}
+		return false;
 	}
 	
 private:

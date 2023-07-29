@@ -46,7 +46,7 @@ public:
 			xspfSource += XSPFCreator::AddFooter(i);
 			
 			// write output string to XSPF file
-			CreateXSPF(xspfSource, output);
+			XSPFCreator::Create(xspfSource, m_OutputFilePath);
 		}
 	}
 	
@@ -105,19 +105,7 @@ public:
 		return false;
 	}
 	
-	bool CreateXSPF( // return true if something written
-		const std::string& source, 
-		std::string filepath = "./output/playlist.xspf")
-	{
-		if (!m_OutputFile.is_open())
-		{
-			m_OutputFile.open(filepath);
-			m_OutputFile << source;
-			m_OutputFile.close();
-			return true;
-		}
-		return false;
-	}
+	
 	
 private:
 	std::string m_InputFilePath;

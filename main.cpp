@@ -9,7 +9,9 @@
 int main(int argc, char** argv) 
 {
 	std::cout <<
-	"~~~~~~~~~~~~~~~~~~~~~~ VLC YouTube Playlist Creator ~~~~~~~~~~~~~~~~~~~~\n" <<
+	"  ~    ~   ~   ~  ~  ~  ~ ~ ~ ~ --------- ~ ~ ~ ~ ~  ~  ~  ~   ~    ~  \n" <<
+	"~~~~~~~~~~~~~~~~~~~~~~ VLC YouTube Playlist Creator ~~~~~~~~~~~~~~~~~~~\n" <<
+	"  ~    ~   ~   ~  ~  ~  ~ ~ ~ ~ --------- ~ ~ ~ ~ ~  ~  ~  ~   ~    ~  \n" <<
 	"It takes an html piece of the playlist webpage\n" <<
 	"and converts it to XSPF-file to open in VLC.\n\n" <<
 	"How to use:\n" <<
@@ -19,7 +21,7 @@ int main(int argc, char** argv)
 	"1. Save the code in a TXT-file and place it in the folder called input.\n" <<
 	"2. Type Y or y.\n" <<
 	"3. Wait for it...\n" <<
-	"4. Collect your LEGENDARY files from the folder Output.\n"<<
+	"4. Collect your LEGENDARY files from the folder output.\n"<<
 	"   (Yes, you can process multiple files at a time!)\n" <<
 	"5. Repeat as many times as you like.\n"<<
 	"6. Type Q or q to exit.\n"<<

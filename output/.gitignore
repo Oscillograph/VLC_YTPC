@@ -1,0 +1,11 @@
+*.bak
+*.bookmarks
+*.dev
+*.debug
+*.exe
+*.win
+*.o
+VLC_YTPC_private.h
+VLC_YTPC_private.rc
+VLC_YTPC_private.res
+VLC_YTPC.layout

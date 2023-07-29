@@ -51,7 +51,7 @@ public:
 				{
 					std::cout << "Found " << m_urlMatches.size() << " urls.\n";
 					tempTitle = m_TitleMatches[0];
-					tempTitle = tempTitle.substr(11, tempTitle.size());
+					tempTitle = tempTitle.substr(12, tempTitle.size());
 					tempURL = m_urlMatches[0]; // there are 2 URLs per title
 					
 					// add an element to output string
@@ -77,7 +77,7 @@ public:
 			}
 			
 			// close XSPF file source
-			xspfSource += u8"	</tracklist>\n";
+			xspfSource += u8"	</trackList>\n";
 			xspfSource += u8"	<extension application=\"http://www.videolan.org/vlc/playlist/0\">\n";
 			for (int j = 0; j <= i; j++){
 				xspfSource += u8"		<vlc:item tid=\"" + std::to_string(j) + "\"/>\n";
@@ -173,7 +173,7 @@ private:
 	std::ofstream m_OutputFile;
 	
 	std::regex m_TitleRegex = std::regex(u8"(aria-label=\".+ Автор: The Cherno) | (aria-label=\".+ Автор: Cherno Unplugged)");
-	std::regex m_URLRegex = std::regex("/watch\\?v=[a-zA-Z0-9\\-]+");
+	std::regex m_URLRegex = std::regex("/watch\\?v=[a-zA-Z0-9\\-_]+");
 	
 	std::smatch m_TitleMatches;
 	std::smatch m_urlMatches;

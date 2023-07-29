@@ -1,7 +1,7 @@
 [Project]
 filename = VLC_YTPC.dev
 name = VLC_YTPC
-UnitCount = 2
+UnitCount = 3
 Type = 1
 Ver = 3
 Includes = 
@@ -53,7 +53,7 @@ Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
-RealEncoding = ASCII
+RealEncoding = UTF-8
 
 
 [VersionInfo]
@@ -77,6 +77,19 @@ SyncProduct = 1
 
 
 [Unit2]
+FileName = include/PlaylistParser.h
+Folder = Headers/include
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = 
+CompileCpp = 0
+
+
+[Unit3]
 FileName = .gitignore
 Folder = Others
 Compile = 0
@@ -85,7 +98,7 @@ Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
-RealEncoding = 
+RealEncoding = ASCII
 
 
 [CompilerSettings]

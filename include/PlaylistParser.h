@@ -24,13 +24,16 @@ public:
 			xspfSource += XSPFCreator::AddHeader();
 			int i = 0;
 			
-			while (GetVideoTitles(rawHTML))
+			while (GetVideoTitle(rawHTML))
 			{	
-				if (GetVideoURLs(rawHTML))
+				if (GetVideoURL(rawHTML))
 				{
 					tempTitle = m_TitleMatches[0];
-					tempTitle = tempTitle.substr(12, tempTitle.size());
-					tempURL = m_urlMatches[0]; // there are 2 URLs per title
+					// 12 from the left for aria-label="
+					// 12 from the right for Автор: which is:
+					// 1 for ":" + 2*5 cyrillic letters + 1 for blank space
+					tempTitle = tempTitle.substr(12, tempTitle.size()-(12 + 12));
+					tempURL = m_urlMatches[0];
 					
 					// add an element to output string
 					xspfSource += XSPFCreator::AddTrack(tempTitle, tempURL, i);
@@ -84,7 +87,7 @@ public:
 		return false;
 	}
 	
-	bool GetVideoTitles(std::string& source)
+	bool GetVideoTitle(const std::string& source)
 	{
 		if (std::regex_search(source, m_TitleMatches, m_TitleRegex))
 		{
@@ -93,7 +96,7 @@ public:
 		return false;
 	}
 	
-	bool GetVideoURLs(std::string& source)
+	bool GetVideoURL(const std::string& source)
 	{
 		if (std::regex_search(source, m_urlMatches, m_URLRegex))
 		{
